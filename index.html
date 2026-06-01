@@ -2,11 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/Personal-web/vite.svg" />
+    <link rel="icon" type="image/jpeg" href="./profile-photo.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <meta
+      name="description"
+      content="Yao-Hung Tsai — simulation engineer at Corning, M.E. NTU Applied Mechanics. Numerical simulation, physics-informed ML, and surrogate modeling for fluid dynamics."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <title>Yao-Hung Tsai</title>
-    <script type="module" crossorigin src="/Personal-web/assets/index-Cnbtg13h.js"></script>
-    <link rel="stylesheet" crossorigin href="/Personal-web/assets/index-BwUE80Jx.css">
+    <script type="module" crossorigin src="/Personal-web/assets/index-CVFfFhq0.js"></script>
+    <link rel="stylesheet" crossorigin href="/Personal-web/assets/index-DvlX0aYC.css">
   </head>
   <body>
     <div id="root"></div>
