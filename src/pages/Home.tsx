@@ -1,7 +1,7 @@
 import { profile, education, workExperience, skills, publications, honors } from '../data/content';
 import Reveal from '../components/Reveal';
 import SectionHeading from '../components/SectionHeading';
-import { MailIcon, LinkedinIcon, ScholarIcon, ArrowUpRight } from '../components/icons';
+import { MailIcon, LinkedinIcon, ScholarIcon } from '../components/icons';
 
 const Home = () => {
   const { contact } = profile;
@@ -25,14 +25,6 @@ const Home = () => {
               {profile.role}
               <span className="block text-ink-muted">{profile.affiliation}</span>
             </p>
-
-            <div className="mt-5 flex flex-wrap gap-2">
-              {profile.interests.map((tag) => (
-                <span key={tag} className="tag">
-                  {tag}
-                </span>
-              ))}
-            </div>
 
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-ink-soft">
               {profile.about.map((p, i) => (
@@ -94,14 +86,17 @@ const Home = () => {
                 />
                 <div className="flex flex-1 flex-col gap-1 sm:flex-row sm:justify-between">
                   <div>
-                    <h3 className="font-semibold text-ink">{edu.school}</h3>
-                    <p className="text-sm text-ink-soft">{edu.degree}</p>
-                    <p className="mt-1 text-sm text-ink-muted">{edu.period}</p>
+                    <h3 className="font-semibold text-ink">{edu.degree}</h3>
+                    <p className="text-sm text-ink-soft">{edu.school}</p>
+                    <div className="mt-1 text-sm text-ink-muted">
+                      {edu.details.map((d, j) => (
+                        <p key={j}>{d}</p>
+                      ))}
+                    </div>
                   </div>
                   <div className="text-sm text-ink-muted sm:text-right">
-                    {edu.details.map((d, j) => (
-                      <p key={j}>{d}</p>
-                    ))}
+                    <p>{edu.period}</p>
+                    {edu.location && <p>{edu.location}</p>}
                   </div>
                 </div>
               </div>
@@ -122,18 +117,23 @@ const Home = () => {
                 <img
                   src={exp.logo}
                   alt={exp.company}
-                  className="h-12 w-12 flex-shrink-0 rounded-lg object-contain"
+                  className={`h-12 w-12 flex-shrink-0 rounded-lg object-contain ${
+                    exp.logoFramed ? 'bg-white p-1.5' : ''
+                  }`}
                 />
                 <div className="flex flex-1 flex-col gap-1 sm:flex-row sm:justify-between">
                   <div>
-                    <h3 className="font-semibold text-ink">{exp.company}</h3>
-                    <p className="text-sm text-ink-soft">{exp.title}</p>
-                    <p className="mt-1 text-sm text-ink-muted">{exp.period}</p>
+                    <h3 className="font-semibold text-ink">{exp.title}</h3>
+                    <p className="text-sm text-ink-soft">{exp.company}</p>
+                    <div className="mt-1 text-sm text-ink-muted">
+                      {exp.details.map((d, j) => (
+                        <p key={j}>{d}</p>
+                      ))}
+                    </div>
                   </div>
                   <div className="text-sm text-ink-muted sm:text-right">
-                    {exp.details.map((d, j) => (
-                      <p key={j}>{d}</p>
-                    ))}
+                    <p>{exp.period}</p>
+                    {exp.location && <p>{exp.location}</p>}
                   </div>
                 </div>
               </div>
@@ -193,7 +193,7 @@ const Home = () => {
                 </div>
                 <h3 className="font-semibold leading-snug text-ink">{pub.title}</h3>
                 <p className="mt-1 text-sm text-ink-soft">{pub.authors}</p>
-                <p className="text-sm italic text-ink-muted">{pub.venue}</p>
+                {pub.venue && <p className="text-sm italic text-ink-muted">{pub.venue}</p>}
                 {pub.link && (
                   <a
                     href={pub.link}
@@ -201,7 +201,7 @@ const Home = () => {
                     rel="noopener noreferrer"
                     className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
                   >
-                    {pub.linkText ?? 'View paper'} <ArrowUpRight className="h-3.5 w-3.5" />
+                    {pub.linkText ?? 'View paper'}
                   </a>
                 )}
               </div>

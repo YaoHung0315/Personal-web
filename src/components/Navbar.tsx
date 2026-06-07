@@ -5,7 +5,6 @@ import { SunIcon, MoonIcon } from './icons';
 const nav = [
   { name: 'Home', href: '/' },
   { name: 'Projects', href: '/projects' },
-  { name: 'CV', href: '/cv' },
 ];
 
 const Navbar = () => {

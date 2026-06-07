@@ -6,17 +6,11 @@ export const asset = (path: string) =>
 
 export const profile = {
   name: 'Yao-Hung Tsai',
-  role: 'Advanced Controls Engineer · Corning Incorporated',
-  affiliation: 'Physics-Informed ML · M.E., NTU Applied Mechanics',
+  role: 'Computational Engineer',
+  affiliation: 'Physics-informed AI · Modeling & Simulation · Digital twin',
   photo: asset('profile-photo.jpg'),
-  interests: [
-    'Simulation & Modeling',
-    'Physics-Informed ML',
-    'Digital Twin',
-    'High-Performance Computing',
-  ],
   about: [
-    'I specialize in **computational modeling** and **physics-informed machine learning**. I leverage high-fidelity numerical simulation to investigate complex physical phenomena, while harnessing **physics-based AI surrogate models** to dramatically boost **computational efficiency** and **predictive accuracy**. By integrating these methodologies, I build **robust digital twins** for rapid simulation and advanced control analysis — turning days of computation into seconds. I am deeply passionate about this field and driven to continuously **push the boundaries** of what this technology can achieve.',
+    'I specialize in **computational modeling** and **physics-informed machine learning**. I leverage high-fidelity numerical simulation to investigate complex physical phenomena, while harnessing **physics-informed AI surrogate models** to dramatically boost **computational efficiency** and **predictive accuracy**. By integrating these methodologies, I build **robust digital twins** for rapid simulation and advanced control analysis. I am deeply passionate about this field and driven to continuously **push the boundaries** of what this technology can achieve.',
   ],
   contact: {
     email: 'phank0315@gmail.com',
@@ -31,22 +25,25 @@ export type Education = {
   degree: string;
   period: string;
   logo: string;
+  location?: string;
   details: string[];
 };
 
 export const education: Education[] = [
   {
     school: 'National Taiwan University',
-    degree: "Master's, Applied Mechanics",
+    degree: 'M.S. in Applied Mechanics',
     period: 'Sep 2023 — Aug 2025',
     logo: asset('NTU.jpg'),
-    details: ['Advisor: Prof. Yi-Ju Chou', 'GPA: 3.99 / 4.3', 'Credits: 27'],
+    location: 'Taipei, Taiwan',
+    details: ['GPA: 3.99 / 4.3', 'Credits: 27', 'Advisor: Prof. Yi-Ju Chou'],
   },
   {
     school: 'National Taiwan University',
-    degree: "Bachelor's, Civil Engineering",
+    degree: 'B.E. in Civil Engineering',
     period: 'Sep 2019 — Jun 2023',
     logo: asset('NTU.jpg'),
+    location: 'Taipei, Taiwan',
     details: ['GPA: 3.69 / 4.0', 'Credits: 168'],
   },
 ];
@@ -56,22 +53,27 @@ export type WorkExperience = {
   title: string;
   period: string;
   logo: string;
+  logoFramed?: boolean;
+  location?: string;
   details: string[];
 };
 
 export const workExperience: WorkExperience[] = [
   {
     company: 'Corning Incorporated',
-    title: 'Advanced Controls Engineer',
+    title: 'Advanced Controls Engineer (RDSS)',
     period: 'Oct 2025 — Present',
     logo: asset('corning-logo.svg'),
-    details: ['Asia Region · Taichung, Taiwan'],
+    logoFramed: true,
+    location: 'Taichung, Taiwan',
+    details: ['Corning Display Technologies'],
   },
   {
     company: 'National Taiwan University',
     title: 'Research Assistant',
     period: 'Sep 2023 — Aug 2025',
     logo: asset('NTU.jpg'),
+    location: 'Taipei, Taiwan',
     details: ['Institute of Applied Mechanics'],
   },
 ];
@@ -79,7 +81,7 @@ export const workExperience: WorkExperience[] = [
 export type SkillGroup = { title: string; items: string[] };
 
 export const skills: SkillGroup[] = [
-  { title: 'Numerical Simulation', items: ['C++', 'Fortran', 'CUDA', 'MPI', 'MATLAB'] },
+  { title: 'Numerical Simulation', items: ['C++', 'Fortran', 'OpenCL', 'MPI', 'MATLAB'] },
   { title: 'Machine Learning', items: ['Python', 'PyTorch', 'R'] },
   { title: 'Software', items: ['ANSYS Fluent', 'OpenFOAM', 'AutoCAD', 'SOLIDWORKS'] },
 ];
@@ -98,7 +100,7 @@ export const publications: Publication[] = [
   {
     title: 'A simulated annealing framework for stabilizing hybrid AI–CFD solvers',
     authors: 'Y.-H. Tsai, Y.-J. Chou',
-    venue: 'Nature Computational Science',
+    venue: '',
     year: '2026',
     status: 'Manuscript',
   },
@@ -146,6 +148,7 @@ export const honors: Honor[] = [
 export type ConferenceItem = {
   title: string;
   type: string;
+  year?: string;
   date?: string;
   location?: string;
   link?: string;
@@ -162,6 +165,7 @@ export type Project = {
   period?: string;
   image?: string;
   imageSize?: 'sm' | 'md' | 'lg';
+  roomyImage?: boolean;
   description?: string[];
   bullets?: string[];
   highlights?: { title: string; description: string }[];
@@ -200,6 +204,7 @@ export const projects: Project[] = [
     period: 'Sep 2023 — Jun 2025',
     image: asset('research/tbnn-workflow.jpg'),
     imageSize: 'sm',
+    roomyImage: true,
     bullets: [
       'Designed a physics-informed machine learning model based on turbulence theory to ensure physically meaningful outputs.',
       'Integrated an AI model with CFD solvers, eliminating additional equations to reduce computational time and enhance accuracy.',
@@ -210,14 +215,16 @@ export const projects: Project[] = [
       {
         title: '48th Conference on Theoretical and Applied Mechanics',
         type: 'Oral',
-        date: 'Nov 2024',
+        year: '2024',
         location: 'Hsinchu, Taiwan',
         link: asset('research/ai-turbulence-oral-1.pdf'),
       },
       {
         title: 'Graduate Research Poster — TBNN Turbulence Modeling',
         type: 'Poster',
+        year: '2025',
         date: 'Jul 2025',
+        location: 'Taipei, Taiwan',
         link: asset('research/tbnn-poster.pdf'),
       },
     ],
@@ -244,6 +251,7 @@ export const projects: Project[] = [
         title:
           'Annual Results Presentation, Dept. of Ocean & Naval Architecture Engineering',
         type: 'Poster',
+        year: '2025',
         date: 'Mar 2025',
         location: 'Taipei, Taiwan',
         link: asset('research/turbidity-currents-poster-3.pdf'),
@@ -251,6 +259,7 @@ export const projects: Project[] = [
       {
         title: '45th Ocean Engineering Conference',
         type: 'Poster',
+        year: '2023',
         date: 'Nov 2023',
         location: 'Keelung, Taiwan',
         link: asset('research/turbidity-currents-poster-2.pdf'),
@@ -294,10 +303,10 @@ export const projects: Project[] = [
     tags: ['Parallel Computing'],
     period: 'Jul 2026 — Present',
     bullets: [
-      'GPU- and multi-node-parallel solvers for the wave, heat, and Laplace equations.',
-      'CUDA kernels handle on-device compute while MPI domain decomposition scales the work across nodes, reducing runtime without losing accuracy.',
+      'Heterogeneous, multi-node-parallel solvers for the wave, heat, and Laplace equations.',
+      'OpenCL kernels handle on-device computation across CPUs and GPUs, while MPI domain decomposition distributes the work across nodes — cutting runtime without sacrificing accuracy.',
     ],
-    technologies: ['CUDA', 'MPI', 'C++', 'Python'],
+    technologies: ['OpenCL', 'MPI', 'C++', 'Python'],
     link: 'https://github.com/YaoHung0315/Numerical-Simulation',
     linkText: 'View on GitHub',
   },

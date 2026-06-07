@@ -16,7 +16,11 @@ const ProjectCard = ({ project }: { project: Project }) => {
     <article className="overflow-hidden rounded-2xl border border-line">
       {/* Media */}
       {project.image && (
-        <div className="relative flex justify-center overflow-hidden border-b border-line bg-surface p-3">
+        <div
+          className={`relative flex justify-center overflow-hidden border-b border-line bg-white ${
+            project.roomyImage ? 'px-3 py-[120px]' : 'p-3'
+          }`}
+        >
           <img
             src={project.image}
             alt={project.title}
@@ -85,73 +89,69 @@ const ProjectCard = ({ project }: { project: Project }) => {
 
         {/* Publication */}
         {project.publication && (
-          <div className="mt-4 border-t border-line pt-4">
+          <div className="mt-4 border-t border-line-strong pt-4">
             <p className="section-label mb-2">Publication</p>
-            <div className="flex flex-col gap-1 text-sm sm:flex-row sm:items-center sm:justify-between">
-              <span className="text-ink-soft">
-                <span
-                  className={`mr-2 rounded px-1.5 py-0.5 text-xs font-medium ${
-                    project.publication.status === 'Published'
-                      ? 'bg-accent-soft text-accent'
-                      : project.publication.status === 'Under Review' ||
-                          project.publication.status === 'Manuscript'
-                        ? 'bg-amber-50 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300'
-                        : 'bg-surface text-ink-muted'
-                  }`}
-                >
-                  {project.publication.status}
-                </span>
-                {project.publication.link ? (
-                  <a
-                    href={project.publication.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium hover:text-accent hover:underline"
-                  >
-                    {project.publication.title}
-                  </a>
-                ) : (
-                  <span className="font-medium text-ink">{project.publication.title}</span>
-                )}
+            <div className="mb-1.5 flex items-center gap-2">
+              <span
+                className={`rounded px-1.5 py-0.5 text-xs font-medium ${
+                  project.publication.status === 'Published'
+                    ? 'bg-accent-soft text-accent'
+                    : project.publication.status === 'Under Review' ||
+                        project.publication.status === 'Manuscript'
+                      ? 'bg-amber-50 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300'
+                      : 'bg-surface text-ink-muted'
+                }`}
+              >
+                {project.publication.status}
               </span>
-              <span className="whitespace-nowrap italic text-ink-muted">
-                {project.publication.venue}, {project.publication.year}
-              </span>
+              <span className="text-xs text-ink-muted">{project.publication.year}</span>
             </div>
+            <h4 className="font-semibold leading-snug text-ink">
+              {project.publication.title}
+            </h4>
+            {project.publication.authors && (
+              <p className="mt-1 text-sm text-ink-soft">{project.publication.authors}</p>
+            )}
+            {project.publication.venue && (
+              <p className="text-sm italic text-ink-muted">{project.publication.venue}</p>
+            )}
+            {project.publication.link && (
+              <a
+                href={project.publication.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-1.5 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
+              >
+                {project.publication.linkText ?? 'View paper'}
+              </a>
+            )}
           </div>
         )}
 
         {/* Conferences */}
         {project.conferences && project.conferences.length > 0 && (
-          <div className="mt-4 border-t border-line pt-4">
+          <div className="mt-4 border-t border-line-strong pt-4">
             <p className="section-label mb-2">Conference Presentations</p>
-            <ul className="space-y-2">
+            <ul className="space-y-4">
               {project.conferences.map((c, i) => (
-                <li
-                  key={i}
-                  className="flex flex-col gap-1 text-sm sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <span className="text-ink-soft">
-                    <span className="mr-2 rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-muted">
+                <li key={i}>
+                  <div className="mb-1 flex items-center gap-2">
+                    <span className="rounded bg-accent-soft px-1.5 py-0.5 text-xs font-medium text-accent">
                       {c.type}
                     </span>
-                    {c.link ? (
-                      <a
-                        href={c.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-accent hover:underline"
-                      >
-                        {c.title}
-                      </a>
-                    ) : (
-                      c.title
-                    )}
-                  </span>
-                  {(c.location || c.date) && (
-                    <span className="whitespace-nowrap text-ink-muted">
-                      {[c.location, c.date].filter(Boolean).join(' · ')}
-                    </span>
+                    {c.year && <span className="text-xs text-ink-muted">{c.year}</span>}
+                  </div>
+                  <p className="font-medium leading-snug text-ink">{c.title}</p>
+                  {c.location && <p className="text-sm text-ink-muted">{c.location}</p>}
+                  {c.link && (
+                    <a
+                      href={c.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
+                    >
+                      pdf
+                    </a>
                   )}
                 </li>
               ))}
