@@ -46,9 +46,6 @@
   .tag {
     @apply inline-flex items-center rounded-full border border-line-strong bg-surface px-3 py-1 text-sm text-ink-soft transition-colors;
   }
-  .link-underline {
-    @apply relative text-ink-soft transition-colors hover:text-accent;
-  }
 }
 
 /* Reveal-on-scroll */
@@ -60,4 +57,15 @@
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

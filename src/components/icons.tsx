@@ -9,16 +9,6 @@ export const MailIcon = (p: IconProps) => (
   </svg>
 );
 
-export const PhoneIcon = (p: IconProps) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} {...p}>
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M3 5a2 2 0 0 1 2-2h2.3a1 1 0 0 1 .95.68l1 3a1 1 0 0 1-.27 1.05L7.5 9.5a13 13 0 0 0 7 7l1.77-1.48a1 1 0 0 1 1.05-.27l3 1a1 1 0 0 1 .68.95V19a2 2 0 0 1-2 2A16 16 0 0 1 3 5Z"
-    />
-  </svg>
-);
-
 export const GithubIcon = (p: IconProps) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...p}>
     <path

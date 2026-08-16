@@ -83,6 +83,8 @@ const Navbar = () => {
             onClick={() => setOpen((v) => !v)}
             className="flex h-9 w-9 items-center justify-center rounded-full text-ink-soft hover:bg-surface sm:hidden"
             aria-label="Toggle menu"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8}>
               {open ? (
@@ -97,8 +99,10 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       <div
+        id="mobile-menu"
+        aria-hidden={!open}
         className={`overflow-hidden border-t border-line bg-page/95 backdrop-blur-md transition-all duration-300 sm:hidden ${
-          open ? 'max-h-60' : 'max-h-0'
+          open ? 'max-h-60' : 'invisible max-h-0'
         }`}
       >
         <div className="flex flex-col px-6 py-2">

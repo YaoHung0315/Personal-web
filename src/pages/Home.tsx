@@ -1,236 +1,199 @@
-import { profile, education, workExperience, skills, publications, honors } from '../data/content';
+import type { ReactNode } from 'react';
+import {
+  profile,
+  education,
+  workExperience,
+  publications,
+  conferenceGroups,
+  honorGroups,
+  grantsAndFellowships,
+} from '../data/content';
 import Reveal from '../components/Reveal';
-import SectionHeading from '../components/SectionHeading';
-import { MailIcon, LinkedinIcon, ScholarIcon } from '../components/icons';
+import { MailIcon, LinkedinIcon, ScholarIcon, ArrowUpRight } from '../components/icons';
+
+type EntryProps = {
+  logo?: string;
+  logoAlt?: string;
+  primary: string;
+  secondary?: ReactNode;
+  meta?: string;
+  location?: string;
+  date?: string;
+  children?: ReactNode;
+};
+
+const Entry = ({ logo, logoAlt, primary, secondary, meta, location, date, children }: EntryProps) => (
+  <article className="grid gap-4 border-t border-line py-6 first:border-t-0 first:pt-0 sm:grid-cols-[1fr_10rem] sm:gap-8">
+    <div className="flex min-w-0 gap-4">
+      {logo && (
+        <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-line bg-white p-1.5">
+          <img src={logo} alt={logoAlt ?? ''} className="h-full w-full object-contain" />
+        </div>
+      )}
+      <div className="min-w-0">
+        <h3 className="font-semibold leading-snug text-ink">{primary}</h3>
+        {secondary && <p className="mt-1 text-sm leading-relaxed text-ink-soft">{secondary}</p>}
+        {meta && <p className="mt-2 text-sm leading-relaxed text-ink-muted">{meta}</p>}
+        {children}
+      </div>
+    </div>
+    {(location || date) && (
+      <div className="text-sm leading-relaxed text-ink-muted sm:text-right">
+        {date && <p className="font-medium text-ink-soft">{date}</p>}
+        {location && <p>{location}</p>}
+      </div>
+    )}
+  </article>
+);
+
+const Authors = ({ list }: { list: string }) => (
+  <>
+    {list.split(/(Y\.-H\. Tsai)/g).map((segment, index) =>
+      segment === 'Y.-H. Tsai' ? <strong key={index} className="font-semibold text-ink">{segment}</strong> : segment
+    )}
+  </>
+);
+
+const Section = ({ title, children }: { title: string; children: ReactNode }) => (
+  <section className="grid gap-6 border-t border-line py-12 md:grid-cols-[12rem_1fr] md:gap-12">
+    <Reveal>
+      <h2 className="text-2xl font-bold tracking-tight text-ink">{title}</h2>
+    </Reveal>
+    <div>{children}</div>
+  </section>
+);
+
+const Subsection = ({ label, children }: { label: string; children: ReactNode }) => (
+  <div className="border-t border-line-strong pt-4 first:border-t-0 first:pt-0 [&+&]:mt-8">
+    <p className="section-label mb-5">{label}</p>
+    {children}
+  </div>
+);
 
 const Home = () => {
   const { contact } = profile;
   const social = [
     { label: 'Email', href: `mailto:${contact.email}`, Icon: MailIcon },
     { label: 'LinkedIn', href: contact.linkedin, Icon: LinkedinIcon },
-    { label: 'Scholar', href: contact.scholar, Icon: ScholarIcon },
+    { label: 'Google Scholar', href: contact.scholar, Icon: ScholarIcon },
   ];
 
   return (
-    <div className="mx-auto max-w-5xl px-6">
-      {/* Hero / About */}
-      <section className="grid grid-cols-1 items-center gap-10 py-12 sm:py-16 md:grid-cols-[1fr_auto]">
+    <div className="mx-auto max-w-6xl px-6">
+      <section className="grid gap-10 py-14 sm:py-20 md:grid-cols-[13rem_1fr] md:items-start md:gap-14">
         <Reveal>
-          <div className="max-w-content">
-            <p className="section-label mb-4">About Me</p>
-            <h1 className="text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-              {profile.name}
-            </h1>
-            <p className="mt-3 text-lg text-ink-soft">
-              {profile.role}
-              <span className="block text-ink-muted">{profile.affiliation}</span>
-            </p>
-
-            <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-ink-soft">
-              {profile.about.map((p, i) => (
-                <p key={i}>
-                  {p.split(/(\*\*[^*]+\*\*)/g).map((seg, j) =>
-                    seg.startsWith('**') && seg.endsWith('**') ? (
-                      <strong key={j} className="font-semibold text-ink">
-                        {seg.slice(2, -2)}
-                      </strong>
-                    ) : (
-                      seg
-                    )
-                  )}
-                </p>
-              ))}
-            </div>
-
-            <div className="mt-7 flex flex-wrap items-center gap-3">
-              {social.map(({ label, href, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith('http') ? '_blank' : undefined}
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-line-strong text-ink-muted transition-colors hover:border-accent hover:text-accent"
-                >
-                  <Icon className="h-[18px] w-[18px]" />
-                </a>
-              ))}
-            </div>
+          <div className="mx-auto w-44 overflow-hidden rounded-2xl border border-line-strong bg-surface md:mx-0 md:w-full">
+            <img src={profile.photo} alt={profile.name} className="aspect-[4/5] h-full w-full object-cover object-top" />
           </div>
         </Reveal>
+        <Reveal delay={100}>
+          <h1 className="text-4xl font-extrabold tracking-[-0.035em] text-ink sm:text-6xl">{profile.name}</h1>
+          <p className="mt-4 text-xl font-medium text-ink-soft">{profile.role}</p>
 
-        <Reveal delay={120}>
-          <div className="mx-auto h-56 w-56 overflow-hidden rounded-2xl ring-1 ring-line-strong sm:h-64 sm:w-64">
-            <img
-              src={profile.photo}
-              alt={profile.name}
-              className="h-full w-full object-cover object-top"
-            />
-          </div>
-        </Reveal>
-      </section>
-
-      {/* Education */}
-      <section className="border-t border-line py-12">
-        <Reveal>
-          <SectionHeading id="education" label="Background" title="Education" />
-        </Reveal>
-        <div className="space-y-4">
-          {education.map((edu, i) => (
-            <Reveal key={i} delay={i * 80}>
-              <div className="flex items-start gap-4 rounded-xl border border-line p-5 transition-colors hover:border-line-strong">
-                <img
-                  src={edu.logo}
-                  alt={edu.school}
-                  className="h-12 w-12 flex-shrink-0 rounded-lg object-contain"
-                />
-                <div className="flex flex-1 flex-col gap-1 sm:flex-row sm:justify-between">
-                  <div>
-                    <h3 className="font-semibold text-ink">{edu.degree}</h3>
-                    <p className="text-sm text-ink-soft">{edu.school}</p>
-                    <div className="mt-1 text-sm text-ink-muted">
-                      {edu.details.map((d, j) => (
-                        <p key={j}>{d}</p>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="text-sm text-ink-muted sm:text-right">
-                    <p>{edu.period}</p>
-                    {edu.location && <p>{edu.location}</p>}
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* Work Experience */}
-      <section className="border-t border-line py-12">
-        <Reveal>
-          <SectionHeading id="experience" label="Background" title="Work Experience" />
-        </Reveal>
-        <div className="space-y-4">
-          {workExperience.map((exp, i) => (
-            <Reveal key={i} delay={i * 80}>
-              <div className="flex items-start gap-4 rounded-xl border border-line p-5 transition-colors hover:border-line-strong">
-                <img
-                  src={exp.logo}
-                  alt={exp.company}
-                  className={`h-12 w-12 flex-shrink-0 rounded-lg object-contain ${
-                    exp.logoFramed ? 'bg-white p-1.5' : ''
-                  }`}
-                />
-                <div className="flex flex-1 flex-col gap-1 sm:flex-row sm:justify-between">
-                  <div>
-                    <h3 className="font-semibold text-ink">{exp.title}</h3>
-                    <p className="text-sm text-ink-soft">{exp.company}</p>
-                    <div className="mt-1 text-sm text-ink-muted">
-                      {exp.details.map((d, j) => (
-                        <p key={j}>{d}</p>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="text-sm text-ink-muted sm:text-right">
-                    <p>{exp.period}</p>
-                    {exp.location && <p>{exp.location}</p>}
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* Skills */}
-      <section className="border-t border-line py-12">
-        <Reveal>
-          <SectionHeading id="skills" label="Toolbox" title="Skills" />
-        </Reveal>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {skills.map((group, i) => (
-            <Reveal key={group.title} delay={i * 70}>
-              <div className="h-full rounded-xl border border-line p-5">
-                <h3 className="mb-3 text-sm font-semibold text-ink">{group.title}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {group.items.map((s) => (
-                    <span key={s} className="tag">
-                      {s}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* Publications */}
-      <section className="border-t border-line py-12">
-        <Reveal>
-          <SectionHeading id="publications" label="Research Output" title="Publications" />
-        </Reveal>
-        <div className="space-y-4">
-          {publications.map((pub, i) => (
-            <Reveal key={i} delay={i * 80}>
-              <div className="rounded-xl border border-line p-5 transition-colors hover:border-line-strong">
-                <div className="mb-2 flex items-center gap-3">
-                  <span className="text-sm font-semibold text-ink-muted">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      pub.status === 'Published'
-                        ? 'bg-accent-soft text-accent'
-                        : pub.status === 'Under Review' || pub.status === 'Manuscript'
-                          ? 'bg-amber-50 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300'
-                          : 'bg-surface text-ink-muted'
-                    }`}
-                  >
-                    {pub.status}
-                  </span>
-                  <span className="text-xs text-ink-muted">{pub.year}</span>
-                </div>
-                <h3 className="font-semibold leading-snug text-ink">{pub.title}</h3>
-                <p className="mt-1 text-sm text-ink-soft">{pub.authors}</p>
-                {pub.venue && <p className="text-sm italic text-ink-muted">{pub.venue}</p>}
-                {pub.link && (
-                  <a
-                    href={pub.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
-                  >
-                    {pub.linkText ?? 'View paper'}
-                  </a>
+          <div className="mt-7 max-w-3xl space-y-4 text-[15px] leading-7 text-ink-soft">
+            {profile.about.map((paragraph, index) => (
+              <p key={index}>
+                {paragraph.split(/(\*\*[^*]+\*\*)/g).map((segment, part) =>
+                  segment.startsWith('**') && segment.endsWith('**') ? (
+                    <strong key={part} className="font-semibold text-ink">{segment.slice(2, -2)}</strong>
+                  ) : segment
                 )}
-              </div>
-            </Reveal>
-          ))}
-        </div>
+              </p>
+            ))}
+          </div>
+
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            {social.map(({ label, href, Icon }) => (
+              <a key={label} href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" aria-label={label} className="flex h-10 w-10 items-center justify-center rounded-full border border-line-strong text-ink-muted transition-colors hover:border-accent hover:text-accent">
+                <Icon className="h-[18px] w-[18px]" />
+              </a>
+            ))}
+          </div>
+
+          <div className="mt-8 border-t border-line pt-5">
+            <p className="section-label mb-3">Research Interests</p>
+            <p className="text-sm leading-7 text-ink-soft">{profile.interests.join(' · ')}</p>
+          </div>
+        </Reveal>
       </section>
 
-      {/* Honors & Awards */}
-      <section className="border-t border-line py-12">
-        <Reveal>
-          <SectionHeading id="honors" label="Recognition" title="Honors & Awards" />
-        </Reveal>
-        <div className="space-y-3">
-          {honors.map((h, i) => (
-            <Reveal key={i} delay={i * 70}>
-              <div className="flex flex-col gap-1 rounded-xl border border-line p-5 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h3 className="font-semibold text-ink">{h.title}</h3>
-                  <p className="text-sm text-ink-muted">{h.org}</p>
-                </div>
-                <p className="whitespace-nowrap text-sm text-ink-muted sm:text-right">
-                  {h.years}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      <Section title="Professional Experience">
+        {workExperience.map((experience, index) => (
+          <Reveal key={experience.title} delay={index * 60}>
+            <Entry logo={experience.logo} logoAlt={experience.company} primary={experience.title} secondary={experience.company} location={experience.location} date={experience.period} />
+          </Reveal>
+        ))}
+      </Section>
+
+      <Section title="Education">
+        {education.map((item, index) => (
+          <Reveal key={item.degree} delay={index * 60}>
+            <Entry logo={item.logo} logoAlt={item.school} primary={item.degree} secondary={item.school} meta={item.meta} location={item.location} date={item.period} />
+          </Reveal>
+        ))}
+      </Section>
+
+      <Section title="Publications">
+        {publications.map((publication, index) => (
+          <Reveal key={publication.title} delay={index * 60}>
+            <Entry primary={publication.title} secondary={<Authors list={publication.authors} />} meta={[publication.venue, publication.volume].filter(Boolean).join(', ')} date={publication.year}>
+              {publication.link ? (
+                <a href={publication.link} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline">
+                  {publication.linkText ?? 'View paper'} <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              ) : <p className="mt-2 text-sm text-ink-muted">{publication.linkText ?? publication.status}</p>}
+            </Entry>
+          </Reveal>
+        ))}
+      </Section>
+
+      <Section title="Presentations">
+        {[...conferenceGroups].reverse().map((group) => (
+          <Subsection key={group.label} label={group.label === 'Professional' ? 'Professional' : 'Academic'}>
+            {group.items.map((item, index) => (
+              <Reveal key={`${item.title}-${item.presentation}`} delay={index * 40}>
+                <Entry
+                  primary={item.presentation ?? item.title}
+                  secondary={<><strong className="font-semibold text-ink">{item.type}</strong><span> · {item.title}</span></>}
+                  location={item.location}
+                  date={item.date}
+                >
+                  {item.link && (
+                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline">
+                      View material <ArrowUpRight className="h-3.5 w-3.5" />
+                    </a>
+                  )}
+                </Entry>
+              </Reveal>
+            ))}
+          </Subsection>
+        ))}
+      </Section>
+
+      <Section title="Honors & Awards">
+        {[...honorGroups].reverse().map((group) => (
+          <Subsection key={group.label} label={group.label === 'Professional' ? 'Professional' : 'Academic'}>
+            {group.items.map((honor, index) => (
+              <Reveal key={honor.title} delay={index * 60}>
+                <Entry primary={honor.title} secondary={honor.org} location={honor.location} date={honor.years} />
+              </Reveal>
+            ))}
+          </Subsection>
+        ))}
+      </Section>
+
+      <Section title="Fellowships">
+        {grantsAndFellowships.map((item, index) => (
+          <Reveal key={item.title} delay={index * 60}>
+            <Entry
+              primary={item.title}
+              secondary={item.organization}
+              date={item.period}
+              location={item.location}
+            />
+          </Reveal>
+        ))}
+      </Section>
     </div>
   );
 };

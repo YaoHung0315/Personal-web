@@ -4,15 +4,21 @@ A clean, minimal academic portfolio built with **Vite + React + TypeScript + Tai
 
 ## Pages
 
-- **Home** — About me, Education, Experience, Skills, Publications, Honors & Awards
-- **Projects** — Research projects (with linked publications & conference talks) and side projects
+- **Home** — About me, Education, Work Experience, Publications, Conferences, Honors & Awards
+- **Projects** — Research projects (with linked publications), work projects, and side projects
 - **CV** — Inline PDF viewer + download
+
+Conferences and Honors are each split into **Academic** and **Professional** groups.
 
 ## Editing content
 
 All text/data lives in one file: [`src/data/content.ts`](src/data/content.ts).
-Edit the `profile`, `education`, `experience`, `skills`, `publications`, `honors`, and
-`projects` objects there — no need to touch the page components.
+Edit the `profile`, `education`, `workExperience`, `publications`, `conferenceGroups`,
+`honorGroups`, and `projects` exports there — no need to touch the page components.
+
+Every card on Home shares one layout: the left column holds the entry (title, subtitle,
+supporting line) and the right column holds location above date. Keep new entries to that
+shape so the page stays even.
 
 Images, the CV, and research PDFs/videos live in [`public/`](public/). To swap your
 photo or CV, replace `public/profile-photo.jpg` or `public/file/CV.pdf`.

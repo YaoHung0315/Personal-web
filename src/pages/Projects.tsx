@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { projects, type Project } from '../data/content';
 import Reveal from '../components/Reveal';
 import { GithubIcon, PlayIcon } from '../components/icons';
@@ -11,16 +11,27 @@ const imageMaxH: Record<NonNullable<Project['imageSize']>, string> = {
 
 const ProjectCard = ({ project }: { project: Project }) => {
   const [showVideo, setShowVideo] = useState(false);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  // Close the demo modal on Escape, lock body scroll, and move focus into it.
+  useEffect(() => {
+    if (!showVideo) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setShowVideo(false);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    closeRef.current?.focus();
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [showVideo]);
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-line">
+    <article className="overflow-hidden rounded-2xl border border-line transition-colors hover:border-line-strong">
       {/* Media */}
       {project.image && (
-        <div
-          className={`relative flex justify-center overflow-hidden border-b border-line bg-white ${
-            project.roomyImage ? 'px-3 py-[120px]' : 'p-3'
-          }`}
-        >
+        <div className="relative flex justify-center overflow-hidden border-b border-line bg-surface p-3">
           <img
             src={project.image}
             alt={project.title}
@@ -89,73 +100,33 @@ const ProjectCard = ({ project }: { project: Project }) => {
 
         {/* Publication */}
         {project.publication && (
-          <div className="mt-4 border-t border-line-strong pt-4">
+          <div className="mt-4 border-t border-line pt-4">
             <p className="section-label mb-2">Publication</p>
-            <div className="mb-1.5 flex items-center gap-2">
-              <span
-                className={`rounded px-1.5 py-0.5 text-xs font-medium ${
-                  project.publication.status === 'Published'
-                    ? 'bg-accent-soft text-accent'
-                    : project.publication.status === 'Under Review' ||
-                        project.publication.status === 'Manuscript'
-                      ? 'bg-amber-50 text-amber-700 dark:bg-amber-400/15 dark:text-amber-300'
-                      : 'bg-surface text-ink-muted'
-                }`}
-              >
-                {project.publication.status}
+            <div className="flex flex-col gap-1 text-sm sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+              <span className="text-ink-soft">
+                {project.publication.link ? (
+                  <a
+                    href={project.publication.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-accent hover:underline"
+                  >
+                    {project.publication.title}
+                  </a>
+                ) : (
+                  <span className="font-medium text-ink">{project.publication.title}</span>
+                )}
+                <span className="block text-ink-muted">
+                  {project.publication.linkText ?? project.publication.status}
+                </span>
               </span>
-              <span className="text-xs text-ink-muted">{project.publication.year}</span>
+              <span className="flex-shrink-0 text-ink-muted sm:text-right">
+                {[project.publication.venue, project.publication.volume]
+                  .filter(Boolean)
+                  .join(', ')}
+                <span className="block">{project.publication.year}</span>
+              </span>
             </div>
-            <h4 className="font-semibold leading-snug text-ink">
-              {project.publication.title}
-            </h4>
-            {project.publication.authors && (
-              <p className="mt-1 text-sm text-ink-soft">{project.publication.authors}</p>
-            )}
-            {project.publication.venue && (
-              <p className="text-sm italic text-ink-muted">{project.publication.venue}</p>
-            )}
-            {project.publication.link && (
-              <a
-                href={project.publication.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1.5 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
-              >
-                {project.publication.linkText ?? 'View paper'}
-              </a>
-            )}
-          </div>
-        )}
-
-        {/* Conferences */}
-        {project.conferences && project.conferences.length > 0 && (
-          <div className="mt-4 border-t border-line-strong pt-4">
-            <p className="section-label mb-2">Conference Presentations</p>
-            <ul className="space-y-4">
-              {project.conferences.map((c, i) => (
-                <li key={i}>
-                  <div className="mb-1 flex items-center gap-2">
-                    <span className="rounded bg-accent-soft px-1.5 py-0.5 text-xs font-medium text-accent">
-                      {c.type}
-                    </span>
-                    {c.year && <span className="text-xs text-ink-muted">{c.year}</span>}
-                  </div>
-                  <p className="font-medium leading-snug text-ink">{c.title}</p>
-                  {c.location && <p className="text-sm text-ink-muted">{c.location}</p>}
-                  {c.link && (
-                    <a
-                      href={c.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
-                    >
-                      pdf
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
           </div>
         )}
 
@@ -165,7 +136,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent"
+            className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-line-strong px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent"
           >
             <GithubIcon className="h-4 w-4" /> {project.linkText ?? 'View repository'}
           </a>
@@ -175,6 +146,9 @@ const ProjectCard = ({ project }: { project: Project }) => {
       {/* Video modal */}
       {showVideo && project.demo && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${project.title} demo video`}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
           onClick={() => setShowVideo(false)}
         >
@@ -182,7 +156,25 @@ const ProjectCard = ({ project }: { project: Project }) => {
             className="w-full max-w-3xl overflow-hidden rounded-xl bg-black"
             onClick={(e) => e.stopPropagation()}
           >
-            <video src={project.demo} controls autoPlay className="w-full" />
+            <div className="flex justify-end bg-black/60 px-2 py-1.5">
+              <button
+                ref={closeRef}
+                onClick={() => setShowVideo(false)}
+                aria-label="Close video"
+                className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                  <path d="M6 6l12 12M6 18 18 6" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+            <video
+              src={project.demo}
+              controls
+              autoPlay
+              aria-label={`${project.title} demo`}
+              className="w-full"
+            />
           </div>
         </div>
       )}
@@ -193,25 +185,29 @@ const ProjectCard = ({ project }: { project: Project }) => {
 const groups: { label: string; category: Project['category'] }[] = [
   { label: 'Research Projects', category: 'Research' },
   { label: 'Working Projects', category: 'Working Experience' },
-  { label: 'Side Project', category: 'Side Project' },
+  { label: 'Side Projects', category: 'Side Project' },
 ];
 
 const Projects = () => (
-  <div className="mx-auto max-w-5xl px-6 py-12">
+  <div className="mx-auto max-w-6xl px-6 py-14 sm:py-20">
     <Reveal>
-      <p className="section-label mb-3">Selected Work</p>
-      <h1 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Projects</h1>
+      <h1 className="text-4xl font-extrabold tracking-[-0.035em] text-ink sm:text-6xl">Projects</h1>
     </Reveal>
 
     {groups.map((group) => {
       const items = projects.filter((p) => p.category === group.category);
       if (items.length === 0) return null;
       return (
-        <section key={group.category} className="mt-14">
-          <h2 className="mb-5 text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-            {group.label}
-          </h2>
-          <div className="space-y-8">
+        <section key={group.category} className="mt-16 border-t border-line pt-10">
+          <div className="mb-7 flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-ink sm:text-[1.7rem]">
+                {group.label}
+              </h2>
+            </div>
+            <span className="text-sm tabular-nums text-ink-muted">{String(items.length).padStart(2, '0')}</span>
+          </div>
+          <div className="space-y-7">
             {items.map((p, i) => (
               <Reveal key={p.id} delay={i * 80}>
                 <ProjectCard project={p} />
