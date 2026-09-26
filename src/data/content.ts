@@ -16,7 +16,7 @@ export const profile = {
     'High-Performance Computing',
   ],
   about: [
-    'I specialize in **computational modeling** and **physics-informed machine learning**. I leverage high-fidelity numerical simulation to investigate complex physical phenomena, while harnessing physics-based AI surrogate models to dramatically boost computational efficiency and predictive accuracy. By integrating these methodologies, I build **digital twins** for rapid simulation and advanced control analysis — turning days of computation into seconds. I am deeply passionate about this field and driven to continuously push the boundaries of what this technology can achieve.',
+    'I specialize in **computational modeling** and **physics-informed machine learning**. I leverage high-fidelity numerical simulation to investigate complex physical phenomena, while harnessing physics-based AI surrogate models to dramatically boost computational efficiency and predictive accuracy. By integrating these methodologies, I build a **digital twin** for rapid simulation and advanced control analysis — turning days of computation into seconds. I am deeply passionate about this field and driven to continuously push the boundaries of what this technology can achieve.',
   ],
   contact: {
     email: 'phank0315@gmail.com',
@@ -140,6 +140,12 @@ export const honorGroups: HonorGroup[] = [
     label: 'Academic',
     items: [
       {
+        title: 'Thesis Merit Award',
+        org: 'Taiwan Society of Architectural Medicine',
+        location: 'Taipei, Taiwan',
+        years: 'Nov 2025',
+      },
+      {
         title: 'Dean’s Award',
         org: 'College of Engineering, National Taiwan University',
         location: 'Taipei, Taiwan',
@@ -149,7 +155,13 @@ export const honorGroups: HonorGroup[] = [
         title: 'Best Master’s Thesis Poster Award',
         org: 'Institute of Applied Mechanics, National Taiwan University',
         location: 'Taipei, Taiwan',
-        years: 'Jun 2025',
+        years: 'May 2025',
+      },
+      {
+        title: 'NTU ESG Sustainable Campus Student Creative Competition - Merit Award',
+        org: 'National Taiwan University',
+        location: 'Taipei, Taiwan',
+        years: 'Feb 2022',
       },
     ],
   },
@@ -157,7 +169,19 @@ export const honorGroups: HonorGroup[] = [
     label: 'Professional',
     items: [
       {
-        title: 'Internal Innovation Recognition',
+        title: 'Innovation Recognition - MLCOP Knowledge Sharing',
+        org: 'Corning Display Technologies, Corning Incorporated',
+        location: 'Taichung, Taiwan',
+        years: 'Sep 2026',
+      },
+      {
+        title: 'GMFC Invited Speaker Recognition',
+        org: 'Corning Incorporated',
+        location: 'New York, USA',
+        years: 'Jul 2026',
+      },
+      {
+        title: 'Innovation Recognition - Innovative Technology',
         org: 'Corning Display Technologies, Corning Incorporated',
         location: 'Taichung, Taiwan',
         years: 'Jun 2026',
@@ -367,7 +391,7 @@ export const projects: Project[] = [
   {
     id: 'premelt-camera',
     category: 'Working Experience',
-    title: 'PreMelt Furnace Infrared Camera',
+    title: 'Furnace Infrared Camera',
     tags: ['Computer Vision', 'Deep Learning', 'Full-Stack Web Development'],
     org: 'Corning Display Technologies, Corning Incorporated',
     location: 'Taichung, Taiwan',
@@ -396,7 +420,7 @@ export const projects: Project[] = [
   {
     id: 'digital-premelt-twin',
     category: 'Working Experience',
-    title: 'Digital PreMelt Twins',
+    title: 'Digital Furnace Twin',
     tags: [
       'Digital Twin',
       'Physics-Informed Machine Learning',
