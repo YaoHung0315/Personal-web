@@ -7,7 +7,7 @@ export const asset = (path: string) =>
 export const profile = {
   name: 'Yao-Hung Tsai',
   role: 'Computational Engineer',
-  photo: asset('profile-photo.jpg'),
+  photo: asset('profile-photo.png'),
   interests: [
     'Scientific Machine Learning',
     'Computational Fluid Dynamics',
@@ -16,14 +16,13 @@ export const profile = {
     'High-Performance Computing',
   ],
   about: [
-    'I specialize in **computational modeling** and **physics-informed machine learning**. I leverage high-fidelity numerical simulation to investigate complex physical phenomena, while harnessing **physics-based AI surrogate models** to dramatically boost **computational efficiency** and **predictive accuracy**. By integrating these methodologies, I build **robust digital twins** for rapid simulation and advanced control analysis — turning days of computation into seconds. I am deeply passionate about this field and driven to continuously **push the boundaries** of what this technology can achieve.',
+    'I specialize in **computational modeling** and **physics-informed machine learning**. I leverage high-fidelity numerical simulation to investigate complex physical phenomena, while harnessing physics-based AI surrogate models to dramatically boost computational efficiency and predictive accuracy. By integrating these methodologies, I build **digital twins** for rapid simulation and advanced control analysis — turning days of computation into seconds. I am deeply passionate about this field and driven to continuously push the boundaries of what this technology can achieve.',
   ],
   contact: {
     email: 'phank0315@gmail.com',
     linkedin: 'https://linkedin.com/in/yao-hung-tsai-2b14b1218',
     scholar: 'https://scholar.google.com/citations?user=2UAMLJAAAAAJ&hl=en',
   },
-  cv: asset('file/CV.pdf'),
 };
 
 export type Education = {
@@ -161,7 +160,7 @@ export const honorGroups: HonorGroup[] = [
         title: 'Internal Innovation Recognition',
         org: 'Corning Display Technologies, Corning Incorporated',
         location: 'Taichung, Taiwan',
-        years: '2026',
+        years: 'Jun 2026',
       },
     ],
   },
@@ -273,6 +272,7 @@ export type Project = {
   title: string;
   tags?: string[];
   org?: string;
+  location?: string;
   period?: string;
   image?: string;
   imageSize?: 'sm' | 'md' | 'lg';
@@ -298,12 +298,14 @@ export const projects: Project[] = [
       'Physics-Informed Machine Learning',
     ],
     org: 'National Taiwan University, Institute of Applied Mechanics',
+    location: 'Taipei, Taiwan',
     period: 'Jun 2025 — Present',
     image: asset('research/sa-framework.jpg'),
     imageSize: 'lg',
     bullets: [
-      'Developed a stabilization framework that prevents hybrid AI–CFD solvers from diverging by redefining numerical iterations as an optimization process.',
-      'Integrated a Simulated Annealing algorithm as a decision gate, allowing early-stage exploration while ensuring high-precision convergence to physical laws.',
+      'Formulated instability in hybrid AI–CFD coupling as an iterative optimization problem and developed a simulated-annealing-inspired acceptance mechanism to regulate learned closure updates during numerical solution.',
+      'Designed a temperature-decay strategy that permits broader solution exploration during early iterations and progressively constrains closure variations to improve late-stage convergence and nonlinear-solver robustness.',
+      'Validated the framework across canonical benchmarks and turbulent flow CFD cases, evaluating residual convergence, closure-field fluctuations, noise sensitivity, and flow-field prediction accuracy.',
     ],
     technologies: ['Python', 'PyTorch', 'MATLAB'],
     publication: publications[0],
@@ -318,12 +320,14 @@ export const projects: Project[] = [
       'Computational Fluid Dynamics',
     ],
     org: 'National Taiwan University, Institute of Applied Mechanics',
+    location: 'Taipei, Taiwan',
     period: 'Sep 2023 — Jun 2025',
     image: asset('research/tbnn-workflow.jpg'),
     imageSize: 'sm',
     bullets: [
-      'Designed a physics-informed machine learning model based on turbulence theory to ensure physically meaningful outputs.',
-      'Integrated an AI model with CFD solvers, eliminating additional equations to reduce computational time and enhance accuracy.',
+      'Developed a geometry-informed tensor-basis neural network using strain and rotation invariants, stream function, and velocity potential to predict physically consistent Reynolds-stress anisotropy.',
+      'Constructed a random-forest mapping from predicted anisotropy and strain rate to eddy viscosity, enabling direct RANS-solver integration without initialization or scaling from a baseline turbulence model.',
+      'Reduced global eddy-viscosity error from approximately 0.35% to 0.14% and increased R² from 0.64 to 0.81, validated via both a priori and a posteriori assessments across three complex geometries.',
     ],
     technologies: [
       'Python',
@@ -331,7 +335,7 @@ export const projects: Project[] = [
       'MATLAB',
       'Shell Script',
       'ANSYS Fluent',
-      'FEniCS',
+      'FEniCSx',
     ],
     publication: publications[1],
   },
@@ -345,14 +349,15 @@ export const projects: Project[] = [
       'High-Performance Computing',
     ],
     org: 'National Taiwan University, Institute of Applied Mechanics',
+    location: 'Taipei, Taiwan',
     period: 'Sep 2022 — Apr 2024',
     image: asset('research/turbidity-3d.jpg'),
     imageSize: 'lg',
     demo: asset('research/turbidity-currents.mp4'),
     bullets: [
-      'Implemented a Fortran-based CFD to simulate the interaction of 100 million particles with fluid.',
-      'Improved efficiency and reduced runtime with Linked-list structures and MPI parallel computing.',
-      'Investigated turbidity current speed, settling velocity, particle deposition, collision, and flow-field development.',
+      'Developed an in-house Fortran Euler–Lagrange CFD–DEM solver to resolve particle settling, collision, deposition, and two-way coupling between dispersed particles and the carrier flow.',
+      'Scaled high-resolution simulations to 100 million particles at Re ~ O(10³) using MPI parallelization and linked-list spatial searches for efficient particle tracking and collision detection.',
+      'Analyzed current-front propagation, autosuspension, and deposit evolution, deriving scaling relationships among propagation speed, current length, settling behavior, and evolving particle–fluid dynamics.',
     ],
     technologies: ['Fortran', 'MPI', 'MATLAB'],
     publication: publications[2],
@@ -364,48 +369,51 @@ export const projects: Project[] = [
     category: 'Working Experience',
     title: 'PreMelt Furnace Infrared Camera',
     tags: ['Computer Vision', 'Deep Learning', 'Full-Stack Web Development'],
-    org: 'Corning Display Technologies',
-    period: 'Jun 2026 — Present',
+    org: 'Corning Display Technologies, Corning Incorporated',
+    location: 'Taichung, Taiwan',
+    period: 'Jul 2026 — Present',
     bullets: [
-      'Built an end-to-end computer-vision pipeline using U-Net and optical flow to convert infrared furnace imagery into quantitative flow-velocity and crown-coverage measurements.',
-      'Integrated live image streams with process analytics in a real-time monitoring application for furnace behavior and manufacturing stability.',
+      'Developed a U-Net segmentation pipeline for infrared imagery to identify surface regions and quantify their spatial coverage throughout the melting process.',
+      'Applied optical flow to estimate pixel-wise surface velocities, derived flow-energy metrics from the resulting velocity fields, and extracted spatial temperature distributions from calibrated infrared images.',
+      'Built a web-based monitoring system that correlates coverage, flow energy, and temperature metrics with PI System measurements and tank attributes, revealing surface physics field behavior.',
     ],
-    technologies: ['Python', 'OpenCV', 'HTML', 'CSS', 'React.js', 'FastAPI', 'SQL'],
+    technologies: ['Python', 'PyTorch', 'OpenCV', 'HTML', 'CSS', 'React.js', 'FastAPI', 'SQL'],
   },
   {
     id: 'active-learning-cfd',
     category: 'Working Experience',
     title: 'Active Learning for CFD Optimization',
     tags: ['Physics-Informed Machine Learning', 'Simulation & Modeling'],
-    org: 'Corning Display Technologies',
+    org: 'Corning Display Technologies, Corning Incorporated',
+    location: 'Taichung, Taiwan',
     period: 'Mar 2026 — Present',
     bullets: [
-      'Architected an automated Proper Orthogonal Decomposition (POD) and Gaussian Process (GP) pipeline with active sampling to maximize physical information capture using minimal CFD data.',
-      'Optimized computational efficiency and significantly reduced the total simulation budget by prioritizing high-uncertainty dimensions.',
+      'Applied Proper Orthogonal Decomposition (POD) to extract dominant reduced-order representations from OpenFOAM simulations, then used Gaussian Process (GP) models to quantify prediction uncertainty and identify the next input conditions for evaluation.',
+      'Automated simulation, model updating, and adaptive resampling in a closed loop, reducing the CFD simulation budget while focusing computation on the most informative regions of the design space.',
     ],
-    technologies: ['Python', 'R', 'MATLAB', 'OpenFOAM'],
+    technologies: ['Python', 'Shell Script', 'R', 'MATLAB', 'OpenFOAM'],
   },
   {
     id: 'digital-premelt-twin',
     category: 'Working Experience',
-    title: 'Digital PreMelt Twin',
+    title: 'Digital PreMelt Twins',
     tags: [
       'Digital Twin',
       'Physics-Informed Machine Learning',
       'Full-Stack Web Development',
     ],
-    org: 'Corning Display Technologies',
+    org: 'Corning Display Technologies, Corning Incorporated',
+    location: 'Taichung, Taiwan',
     period: 'Nov 2025 — Present',
     bullets: [
-      'Developed a Reduced Order Model (ROM) using Proper Orthogonal Decomposition (POD) as the core algorithm to compute glass melting flows in real time.',
-      "Integrated the digital twin into a web platform, processing live sensor data to deploy dynamic 3D visualizations of the tank's physical fields.",
-      'Formulated quantitative physical indices directly from predicted field behaviors to monitor system anomalies and optimize operational parameters.',
+      'Developed a POD-based reduced-order model from high-fidelity CFD simulations to reconstruct full physical fields in the same data structure as the original simulations.',
+      'Achieved approximately 3,600× wall-clock acceleration on standard computing hardware while maintaining strong agreement with CFD reference fields, with a coefficient of determination of approximately R² = 0.99.',
+      'Integrated sensor data, interactive 3D field visualization, and physics-based indicators into a web platform to track thermal-region size, temperature, location, maximum velocity, and electrical quantities.',
     ],
     technologies: [
       'Python',
       'MATLAB',
       'R',
-      'Shell Script',
       'OpenFOAM',
       'HTML',
       'CSS',
@@ -422,8 +430,8 @@ export const projects: Project[] = [
     tags: ['High-Performance Computing'],
     period: 'May 2026 — Present',
     bullets: [
-      'GPU- and multi-node-parallel solvers for the wave, heat, and Laplace equations.',
-      'OpenCL kernels handle device-side compute while MPI domain decomposition scales the work across nodes, reducing runtime without losing accuracy.',
+      'Developed GPU-accelerated, multi-node solvers for the wave, heat, and Laplace equations using OpenCL for parallel computation and MPI for distributed-memory domain decomposition.',
+      'Reduced runtime while preserving numerical accuracy as problem sizes scale across multiple compute nodes.',
     ],
     technologies: ['OpenCL', 'MPI', 'C++', 'Python'],
     link: 'https://github.com/YaoHung0315/Numerical-Simulation',

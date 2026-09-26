@@ -1,13 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { projects, type Project } from '../data/content';
 import Reveal from '../components/Reveal';
-import { GithubIcon, PlayIcon } from '../components/icons';
+import { ArrowUpRight, GithubIcon, PlayIcon } from '../components/icons';
 
 const imageMaxH: Record<NonNullable<Project['imageSize']>, string> = {
   sm: 'max-h-[380px]',
   md: 'max-h-[460px]',
   lg: 'max-h-[600px]',
 };
+
+const Authors = ({ list }: { list: string }) => (
+  <>
+    {list.split(/(Y\.-H\. Tsai)/g).map((segment, index) =>
+      segment === 'Y.-H. Tsai' ? (
+        <strong key={index} className="font-semibold text-ink">
+          {segment}
+        </strong>
+      ) : (
+        segment
+      )
+    )}
+  </>
+);
 
 const ProjectCard = ({ project }: { project: Project }) => {
   const [showVideo, setShowVideo] = useState(false);
@@ -49,14 +63,25 @@ const ProjectCard = ({ project }: { project: Project }) => {
       )}
 
       <div className="p-6">
-        {project.tags && project.tags.length > 0 && (
-          <p className="section-label mb-2">{project.tags.join('  ·  ')}</p>
-        )}
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h3 className="text-xl font-bold tracking-tight text-ink">{project.title}</h3>
-          {project.period && <span className="text-sm text-ink-muted">{project.period}</span>}
+        <div className="border-b border-line pb-5">
+          {project.tags && project.tags.length > 0 && (
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-ink-muted">
+              {project.tags.join('  ·  ')}
+            </p>
+          )}
+          <div className="grid gap-3 sm:grid-cols-[1fr_10rem] sm:gap-6">
+            <div className="min-w-0">
+            <h3 className="text-xl font-bold tracking-tight text-ink">{project.title}</h3>
+              {project.org && (
+                <p className="mt-1 text-sm leading-relaxed text-ink-soft">{project.org}</p>
+              )}
+            </div>
+            <div className="pt-1 text-sm leading-relaxed text-ink-muted sm:text-right">
+              {project.period && <p className="font-medium text-ink-soft">{project.period}</p>}
+              {project.location && <p>{project.location}</p>}
+            </div>
+          </div>
         </div>
-        {project.org && <p className="mt-1 text-sm text-ink-muted">{project.org}</p>}
 
         {project.description && project.description.length > 0 && (
           <div className="mt-3 space-y-3 text-[15px] leading-relaxed text-ink-soft">
@@ -101,31 +126,40 @@ const ProjectCard = ({ project }: { project: Project }) => {
         {/* Publication */}
         {project.publication && (
           <div className="mt-4 border-t border-line pt-4">
-            <p className="section-label mb-2">Publication</p>
-            <div className="flex flex-col gap-1 text-sm sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-              <span className="text-ink-soft">
+            <div className="grid gap-3 sm:grid-cols-[1fr_6rem] sm:gap-6">
+              <div className="min-w-0 text-sm">
+                <h4 className="font-semibold leading-relaxed text-ink">
+                  {project.publication.title}
+                </h4>
+                <p className="mt-1 leading-relaxed text-ink-soft">
+                  <Authors list={project.publication.authors} />
+                </p>
+                {(project.publication.venue || project.publication.volume) && (
+                  <p className="mt-1 leading-relaxed text-ink-muted">
+                    {[project.publication.venue, project.publication.volume]
+                      .filter(Boolean)
+                      .join(', ')}
+                  </p>
+                )}
                 {project.publication.link ? (
                   <a
                     href={project.publication.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-medium text-accent hover:underline"
+                    className="mt-2 inline-flex items-center gap-1 font-medium text-accent hover:underline"
                   >
-                    {project.publication.title}
+                    {project.publication.linkText ?? 'View paper'}
+                    <ArrowUpRight className="h-3.5 w-3.5" />
                   </a>
                 ) : (
-                  <span className="font-medium text-ink">{project.publication.title}</span>
+                  <p className="mt-2 text-ink-muted">
+                    {project.publication.linkText ?? project.publication.status}
+                  </p>
                 )}
-                <span className="block text-ink-muted">
-                  {project.publication.linkText ?? project.publication.status}
-                </span>
-              </span>
-              <span className="flex-shrink-0 text-ink-muted sm:text-right">
-                {[project.publication.venue, project.publication.volume]
-                  .filter(Boolean)
-                  .join(', ')}
-                <span className="block">{project.publication.year}</span>
-              </span>
+              </div>
+              <p className="pt-0.5 text-sm font-medium text-ink-soft sm:text-right">
+                {project.publication.year}
+              </p>
             </div>
           </div>
         )}

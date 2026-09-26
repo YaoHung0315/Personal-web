@@ -6,7 +6,6 @@ A clean, minimal academic portfolio built with **Vite + React + TypeScript + Tai
 
 - **Home** — About me, Education, Work Experience, Publications, Conferences, Honors & Awards
 - **Projects** — Research projects (with linked publications), work projects, and side projects
-- **CV** — Inline PDF viewer + download
 
 Conferences and Honors are each split into **Academic** and **Professional** groups.
 
@@ -20,8 +19,8 @@ Every card on Home shares one layout: the left column holds the entry (title, su
 supporting line) and the right column holds location above date. Keep new entries to that
 shape so the page stays even.
 
-Images, the CV, and research PDFs/videos live in [`public/`](public/). To swap your
-photo or CV, replace `public/profile-photo.jpg` or `public/file/CV.pdf`.
+Images and research PDFs/videos live in [`public/`](public/). To swap your photo,
+replace `public/profile-photo.png`.
 
 ## Develop
 
